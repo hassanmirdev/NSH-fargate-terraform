@@ -1,5 +1,7 @@
-name: Build and Push Docker Images to ECR
+# This workflow will checkout the Noe.js code, build it, create Docker Image and push it to the Amazon ECR Registry.
 
+name: Build Docker Image and Push Docker Images to ECR
+run-name: Build & Push Image
 on:
   workflow_dispatch:
 
