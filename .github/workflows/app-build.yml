@@ -31,10 +31,18 @@ jobs:
         docker tag patient-service:latest ${{ secrets.AWS_ECR_PATIENT_URL }}:patient-service-latest
         docker push ${{ secrets.AWS_ECR_PATIENT_URL }}:patient-service-latest
 
-    # Build, tag, and push Docker image for Appointment Service
     - name: Build, Tag & Push Docker Image for Appointment Service
       run: |
-        cd ./app/appointment-svc/
-        docker build -t appointment-service:latest -f Dockerfile .
-        docker tag appointment-service:latest ${{ secrets.AWS_ECR_APPOINTMENT_URL }}:appointment-service-latest
-        docker push ${{ secrets.AWS_ECR_APPOINTMENT_URL }}:appointment-service-latest
+       cd ./app/appointment-svc/
+       docker build -t appointment-service:latest -f Dockerfile .
+       docker tag appointment-service:latest 677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:appointment-service-latest
+       docker push 677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:appointment-service-latest
+
+
+    # # Build, tag, and push Docker image for Appointment Service
+    # - name: Build, Tag & Push Docker Image for Appointment Service
+    #   run: |
+    #     cd ./app/appointment-svc/
+    #     docker build -t appointment-service:latest -f Dockerfile .
+    #     docker tag appointment-service:latest ${{ secrets.AWS_ECR_APPOINTMENT_URL }}:appointment-service-latest
+    #     docker push ${{ secrets.AWS_ECR_APPOINTMENT_URL }}:appointment-service-latest
