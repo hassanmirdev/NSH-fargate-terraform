@@ -104,3 +104,5 @@ resource "aws_ecs_service" "patient_service" {
     container_name   = var.patient_container_name
     container_port   = 3000
   }
+}
+
