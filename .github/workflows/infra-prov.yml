@@ -60,7 +60,7 @@ jobs:
       # Step: Run TFLint
       - name: Run TFLint
         run: |
-         cd Infra/Environments/${{ github.event.inputs.environment || 'dev' }}
+         cd ./infra/environments/${{ github.event.inputs.environment || 'dev' }}
 
          # Ensure .tflint.hcl exists
          if [ ! -f ".tflint.hcl" ]; then
@@ -151,7 +151,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: terraform-docs/gh-actions@v1.3.0
         with:
-          working-dir: Infra/Environments/${{ github.event.inputs.environment || 'dev' }}
+          working-dir: ./infra/environments/${{ github.event.inputs.environment || 'dev' }}
           output-file: README.md
           output-method: inject
           git-push: true
