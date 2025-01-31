@@ -1,4 +1,4 @@
-name: Provision infra through terraform.
+name: Provision infra through terraform..
 run-name: infa prov
 on:
   workflow_dispatch:
