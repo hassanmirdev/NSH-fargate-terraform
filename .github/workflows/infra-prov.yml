@@ -1,5 +1,5 @@
-name: Infra Provisioning through Terraform
-
+name: Provision infra through terraform.
+run-name: infa prov
 on:
   workflow_dispatch:
     inputs:
