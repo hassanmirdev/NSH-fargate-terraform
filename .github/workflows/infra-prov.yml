@@ -57,7 +57,6 @@ jobs:
           tflint --version
 
 
-      # Step: Run TFLint
       - name: Run TFLint
         run: |
          cd ./infra/environments/${{ github.event.inputs.environment || 'dev' }}
@@ -80,7 +79,6 @@ jobs:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # checkov -d . --quiet --framework terraform
       # Step: Install Checkov
       - name: Install Checkov
         run: |
@@ -114,14 +112,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # # Step: Terraform Workspace Select
-      # - name: Terraform Workspace Select
-      #   run: |
-      #     cd ./infra/environments/${{ github.event.inputs.environment || 'dev' }}
-      #     terraform workspace select ${{ github.event.inputs.environment || 'dev' }} || terraform workspace new ${{ github.event.inputs.environment || 'dev' }}
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
 
       # Step: Terraform Plan
       - name: Terraform Plan
@@ -132,13 +122,13 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # # Step: Checkout Repository for PR
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     fetch-depth: 0
-      #     ref: ${{ github.event.pull_request.head.ref || github.ref }} 
-      #     token: ${{ secrets.PAT_TOKEN }}
+      # Step: Checkout Repository for PR
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }} 
+          token: ${{ secrets.PAT_TOKEN }}
 
       # Step: Configure Git for committing generated README.md
       - name: Configure Git
@@ -157,14 +147,14 @@ jobs:
           git-push: true
           config-file: .terraform-docs.yml
 
-      #  # **New Step: Add README.md to PR Comment using Sticky Comment**
-      # - name: Post README.md as PR Comment
-      #   if: ${{ github.event_name == 'pull_request' }}
-      #   uses: marocchino/sticky-pull-request-comment@v2.9.0
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     header: "Terraform Documentation 📖"
-      #     path: "Infra/Environments/${{ github.event.inputs.environment || 'dev' }}/README.md"
+       # Add README.md to PR Comment using Sticky Comment
+      - name: Post README.md as PR Comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          header: "Terraform Documentation "
+          path: "./infra/environments/${{ github.event.inputs.environment || 'dev' }}/README.md"
     
 
       # Step: Apply Terraform if PR is merged
