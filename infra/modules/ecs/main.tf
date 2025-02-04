@@ -23,15 +23,28 @@ resource "aws_ecs_task_definition" "appointment_service" {
         protocol      = "tcp"
       }
     ]
-   logConfiguration = {  # ECS task definition to send container logs to CloudWatch
-      logDriver = "awslogs"
-      options = {
-        "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
-        "awslogs-region"        = "us-east-1"
-        "awslogs-stream-prefix" = "ecs"
+    logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+          "awslogs-region"        = "us-east-1"
+          "awslogs-stream-prefix" = "ecs"
+        }
       }
-    }
-  }])
+    }, {
+      # X-Ray Daemon sidecar container definition
+      name      = "xray-daemon"
+      image     = "amazon/aws-xray-daemon"
+      cpu       = 32
+      memory    = 256
+      essential = false
+      portMappings = [
+        {
+          containerPort = 2000
+          hostPort      = 2000
+        }
+      ]
+    }])
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -62,7 +75,28 @@ resource "aws_ecs_task_definition" "patient_service" {
         protocol      = "tcp"
       }
     ]
-  }])
+    logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+          "awslogs-region"        = "us-east-1"
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+    }, {
+      # X-Ray Daemon sidecar container definition
+      name      = "xray-daemon"
+      image     = "amazon/aws-xray-daemon"
+      cpu       = 32
+      memory    = 256
+      essential = false
+      portMappings = [
+        {
+          containerPort = 2000
+          hostPort      = 2000
+        }
+      ]
+    }])
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
