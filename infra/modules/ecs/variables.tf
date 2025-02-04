@@ -31,7 +31,7 @@ variable "execution_role" {
 variable "task_cpu" {
   description = "CPU units for the container"
   type        = number
-  default     = 288
+  default     = 325
 }
 
 variable "task_memory" {
