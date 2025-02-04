@@ -50,19 +50,17 @@ resource "aws_ecs_task_definition" "appointment_service" {
         }
       ]
      environment = [
+    {
        
        name  = "AWS_XRAY_DAEMON_ADDRESS"
        value = "xray.us-east-1.amazonaws.com:2000"
      },{
         name  = "AWS_XRAY_TRACING_NAME"
         value = "appointment-service-trace"
-       },
-      {
-     {
+       },{
       name  = "AWS_XRAY_DAEMON_DISABLE_METADATA"
       value = "true"
-     }
-     ]
+     }]
     
     logConfiguration = {
         logDriver = "awslogs"
@@ -127,20 +125,17 @@ resource "aws_ecs_task_definition" "patient_service" {
           hostPort      = 2000
         }
       ]
-     environment = [
+     environment = [ {
        
        name  = "AWS_XRAY_DAEMON_ADDRESS"
        value = "xray.us-east-1.amazonaws.com:2000"
      },{
         name  = "AWS_XRAY_TRACING_NAME"
         value = "patient-service-trace"
-       },
-      {
-     {
+       },{
       name  = "AWS_XRAY_DAEMON_DISABLE_METADATA"
       value = "true"
-     }
-     ]
+     }]
     
     logConfiguration = {
         logDriver = "awslogs"
