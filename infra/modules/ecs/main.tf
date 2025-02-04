@@ -16,6 +16,13 @@ resource "aws_ecs_task_definition" "appointment_service" {
     cpu        = var.task_cpu  # Make sure this is an integer
     essential  = true
    
+    portMappings = [
+      {
+        containerPort = 3001
+        hostPort      = 3001
+        protocol      = "tcp"
+      }
+    ]
    logConfiguration = {  # ECS task definition to send container logs to CloudWatch
       logDriver = "awslogs"
       options = {
@@ -24,13 +31,6 @@ resource "aws_ecs_task_definition" "appointment_service" {
         "awslogs-stream-prefix" = "ecs"
       }
     }
-    portMappings = [
-      {
-        containerPort = 3001
-        hostPort      = 3001
-        protocol      = "tcp"
-      }
-    ]
   }])
 
   requires_compatibilities = ["FARGATE"]
