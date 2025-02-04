@@ -42,7 +42,7 @@ module "alb" {
   subnets     = module.vpc.public_subnets
 }
 
-module "monitoring" {
-  source         = "../../modules/cloudwatch"
-  log_group_name = var.log_group_name
-}
+# module "monitoring" {
+# source         = "../../modules/cloudwatch"
+#  log_group_name = var.log_group_name
+# }
