@@ -83,11 +83,11 @@ variable "appointment_container_name" {
 }
 
 
-variable "log_group_name" {
-  description = "CloudWatch Log Group Name"
-  type        = string
-  default     = "ecs-application-logs"
-}
+# variable "log_group_name" {
+ # description = "CloudWatch Log Group Name"
+ # type        = string
+ # default     = "ecs-application-logs"
+# }
 
 variable "image_url_patient" {
   description = "Container Image URL"
