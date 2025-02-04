@@ -82,3 +82,48 @@ resource "aws_iam_role_policy_attachment" "ecs_cloudwatch_attachment" {
   role       = aws_iam_role.ecs_task_execution_role.name
 }
 
+resource "aws_iam_role" "ecs_xray_role" {
+  name = "ecs-xray-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Effect = "Allow"
+        Sid    = ""
+      },
+    ]
+  })
+}
+
+# Set Up AWS X-Ray for Application Tracing
+resource "aws_iam_policy" "xray_policy" {
+  name = "ecs-xray-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "xray:PutTelemetryRecords"
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action   = "xray:PutTraceSegments"
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "xray_policy_attachment" {
+  policy_arn = aws_iam_policy.xray_policy.arn
+  role       = aws_iam_role.ecs_xray_role.name
+}
+
+
