@@ -28,17 +28,17 @@ variable "execution_role" {
   type        = string
 }
 
-variable "task_cpu" {
-  description = "CPU units for the container"
-  type        = string
-  default     = "1 vCPU"
-}
+# variable "task_cpu" {
+#  description = "CPU units for the container"
+#  type        = number
+#  default     = 1 vCPU
+#}
 
-variable "task_memory" {
-  description = "Memory for the container in MB"
-  type        = string
-  default     = "2GB"
-}
+# variable "task_memory" {
+#  description = "Memory for the container in MB"
+#  type        = string
+#  default     = "2GB"
+#}
 
 variable "cluster_id" {
   description = "The ID of the ECS cluster"
