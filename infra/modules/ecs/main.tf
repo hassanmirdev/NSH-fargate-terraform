@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "appointment_service" {
       # X-Ray Daemon sidecar container definition
       name      = "xray-daemon"
       image     = "amazon/aws-xray-daemon"
-      cpu       = 32
+      cpu       = 256
       memory    = 256
       essential = false
       portMappings = [
@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "patient_service" {
       # X-Ray Daemon sidecar container definition
       name      = "xray-daemon"
       image     = "amazon/aws-xray-daemon"
-      cpu       = 32
+      cpu       = 256
       memory    = 256
       essential = false
       portMappings = [
