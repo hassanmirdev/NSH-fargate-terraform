@@ -66,7 +66,7 @@ resource "aws_ecs_task_definition" "appointment_service" {
         logDriver = "awslogs"
         options = {
           awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
-          awslogs-region        = "us-west-2"
+          awslogs-region        = "us-east-1"
           awslogs-stream-prefix = "xray"
         }
       }
@@ -141,7 +141,7 @@ resource "aws_ecs_task_definition" "patient_service" {
         logDriver = "awslogs"
         options = {
           awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
-          awslogs-region        = "us-west-2"
+          awslogs-region        = "us-east-1"
           awslogs-stream-prefix = "xray"
         }
       }
