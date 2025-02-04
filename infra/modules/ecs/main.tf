@@ -13,7 +13,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
     name       = var.appointment_container_name
     image      = var.image_url
     memory     = var.task_memory
-    cpu        = var.task_cpu  # Make sure this is an integer
+    cpu        = 256
+  # cpu        = var.task_cpu  # Make sure this is an integer
     essential  = true
    
     portMappings = [
@@ -66,7 +67,8 @@ resource "aws_ecs_task_definition" "patient_service" {
     name       = var.patient_container_name
     image      = var.image_url_patient
     memory     = var.task_memory
-    cpu        = var.task_cpu  # Make sure this is an integer
+    cpu        = 256   
+    #cpu        = var.task_cpu  # Make sure this is an integer
     essential  = true
     portMappings = [
       {
