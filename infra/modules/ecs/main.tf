@@ -109,8 +109,8 @@ resource "aws_ecs_task_definition" "patient_service" {
   execution_role_arn       = var.execution_role
 
   # Task-level CPU and Memory
-  cpu                      = var.task_cpu
-  memory                   = var.task_memory
+  # cpu                      = var.task_cpu
+  # memory                   = var.task_memory
 
   tags = {
     Name = var.task_name
