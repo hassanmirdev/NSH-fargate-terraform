@@ -54,8 +54,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
   execution_role_arn       = var.execution_role
 
   # Task-level CPU and Memory
-  cpu                      = 256
-  memory                   = 512
+  # cpu                      = 256
+ # memory                   = 512
 
   tags = {
     Name = var.task_name
@@ -65,8 +65,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
 
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.task_name
-  cpu                      = 512
-  memory                   = 1024
+  cpu                      = 256
+  memory                   = 5212
   container_definitions    = jsonencode([{
     name       = var.patient_container_name
     image      = var.image_url_patient
