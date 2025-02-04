@@ -1,5 +1,10 @@
 resource "aws_ecs_cluster" "main" {
   name = var.cluster_name
+
+  settings {                          #Enable Container Insights in ECS Cluster:
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_ecs_task_definition" "appointment_service" {
@@ -10,6 +15,15 @@ resource "aws_ecs_task_definition" "appointment_service" {
     memory     = var.task_memory
     cpu        = var.task_cpu  # Make sure this is an integer
     essential  = true
+   
+   logConfiguration = {  # ECS task definition to send container logs to CloudWatch
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+        "awslogs-region"        = "us-east-1"
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
     portMappings = [
       {
         containerPort = 3001
