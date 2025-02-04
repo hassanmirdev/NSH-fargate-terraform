@@ -120,3 +120,12 @@ resource "aws_ecs_service" "patient_service" {
   }
 }
 
+# AWS cloud watch log group resource.
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name = "/ecs/ecs-application-logs"
+  retention_in_days = 7
+}
+
+output "log_group_name" { 
+value = aws_cloudwatch_log_group.ecs_logs.name
+}
