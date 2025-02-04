@@ -35,3 +35,50 @@ resource "aws_iam_role_policy" "ecs_task_ecr_policy" {
     ]
   })
 }
+
+
+# ECS Task Execution: ECS requires a task execution role to push logs to CloudWatch. 
+# You'll need to define an IAM role with permissions to push logs to CloudWatch
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "ecs-task-execution-role"
+  
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Effect = "Allow"
+        Sid    = ""
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ecs_cloudwatch_policy" {
+  name = "ecs-cloudwatch-logs-policy"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "logs:CreateLogStream"
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Action   = "logs:PutLogEvents"
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:*:*:log-group:/ecs/*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_cloudwatch_attachment" {
+  policy_arn = aws_iam_policy.ecs_cloudwatch_policy.arn
+  role       = aws_iam_role.ecs_task_execution_role.name
+}
+
