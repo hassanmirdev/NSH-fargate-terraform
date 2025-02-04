@@ -13,7 +13,7 @@ image_url = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:appointmen
 # image_url = "677276078111.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest"
 
 task_memory = 512
-task_cpu = 256
+task_cpu = 288
 # log_group_name = "ecs-application-logs"
 image_url_patient = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:patient-service-latest"
 # image_url_patient = "677276078111.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest"
