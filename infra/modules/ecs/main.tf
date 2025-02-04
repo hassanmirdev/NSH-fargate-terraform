@@ -9,12 +9,14 @@ resource "aws_ecs_cluster" "main" {
 
 resource "aws_ecs_task_definition" "appointment_service" {
   family                   = var.task_name
+  cpu                      = 512
+  memory                   = 1024
   container_definitions    = jsonencode([{
     name       = var.appointment_container_name
     image      = var.image_url
-    memory     = var.task_memory
-    cpu        = 256
-  # cpu        = var.task_cpu  # Make sure this is an integer
+     memory     = 512
+     cpu        = 256
+  
     essential  = true
    
     portMappings = [
@@ -36,8 +38,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
       # X-Ray Daemon sidecar container definition
       name      = "xray-daemon"
       image     = "amazon/aws-xray-daemon"
-      cpu       = 256
-      memory    = 256
+      cpu       = 50
+      memory    = 128
       essential = false
       portMappings = [
         {
@@ -52,8 +54,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
   execution_role_arn       = var.execution_role
 
   # Task-level CPU and Memory
-  cpu                      = var.task_cpu
-  memory                   = var.task_memory
+  cpu                      = 256
+  memory                   = 512
 
   tags = {
     Name = var.task_name
@@ -63,10 +65,12 @@ resource "aws_ecs_task_definition" "appointment_service" {
 
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.task_name
+  cpu                      = 512
+  memory                   = 1024
   container_definitions    = jsonencode([{
     name       = var.patient_container_name
     image      = var.image_url_patient
-    memory     = var.task_memory
+    memory     = 512
     cpu        = 256   
     #cpu        = var.task_cpu  # Make sure this is an integer
     essential  = true
@@ -89,8 +93,8 @@ resource "aws_ecs_task_definition" "patient_service" {
       # X-Ray Daemon sidecar container definition
       name      = "xray-daemon"
       image     = "amazon/aws-xray-daemon"
-      cpu       = 256
-      memory    = 256
+      cpu       = 50
+      memory    = 128
       essential = false
       portMappings = [
         {
