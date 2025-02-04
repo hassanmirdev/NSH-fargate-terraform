@@ -1,7 +1,7 @@
 resource "aws_ecs_cluster" "main" {
   name = var.cluster_name
 
-  settings {                          #Enable Container Insights in ECS Cluster:
+  setting {                          #Enable Container Insights in ECS Cluster:
     name  = "containerInsights"
     value = "enabled"
   }
