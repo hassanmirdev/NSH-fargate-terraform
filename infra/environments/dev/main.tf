@@ -21,8 +21,8 @@ module "ecs" {
   task_name       = var.task_name
   image_url       = var.image_url
   image_url_patient = var.image_url_patient
-  task_memory     = var.task_memory
-  task_cpu        = var.task_cpu
+ # task_memory     = var.task_memory
+ # task_cpu        = var.task_cpu
   execution_role  = module.iam.ecs_task_role_arn
   patient_service_name    = var.patient_service_name
   appointment_service_name = var.appointment_service_name
