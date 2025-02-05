@@ -50,6 +50,14 @@ resource "aws_ecs_task_definition" "appointment_service" {
 #value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
       }
     ]
+    logConfiguration = {
+    logDriver = "awslogs"
+     options = {
+      "awslogs-group"         = "/ecs/cloudwatch-agent-logs"
+      "awslogs-region"        = "us-east-1"
+      "awslogs-stream-prefix" = "cloudwatch-agent"
+  }
+}
     mountPoints = [
       {
         sourceVolume = "cloudwatch-config-volume"
@@ -153,6 +161,14 @@ resource "aws_ecs_task_definition" "patient_service" {
        # value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
       }
     ]
+     logConfiguration = {
+    logDriver = "awslogs"
+     options = {
+      "awslogs-group"         = "/ecs/cloudwatch-agent-logs"
+      "awslogs-region"        = "us-east-1"
+      "awslogs-stream-prefix" = "cloudwatch-agent"
+  }
+}
     mountPoints = [
       {
         sourceVolume = "cloudwatch-config-volume"
