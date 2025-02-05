@@ -1,3 +1,5 @@
+# ECS resource
+
 resource "aws_ecs_cluster" "main" {
   name = var.cluster_name
 
@@ -6,6 +8,8 @@ resource "aws_ecs_cluster" "main" {
     value = "enabled"
   }
 }
+
+# ECS TASK DEFINITION APPOINTMENT SERVICE
 
 resource "aws_ecs_task_definition" "appointment_service" {
   family                   = var.task_name
@@ -104,6 +108,10 @@ resource "aws_ecs_task_definition" "appointment_service" {
     }
   }
 }
+
+
+# ECS TASK DEFINITION APPOINTMENT SERVICE
+
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.task_name
   cpu                      = 512
@@ -201,3 +209,57 @@ resource "aws_ecs_task_definition" "patient_service" {
     }
   }
 }
+
+
+# ECS Service for Appointment Service
+resource "aws_ecs_service" "appointment_service" {
+  name            = var.appointment_service_name
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.appointment_service.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_groups
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.appointment_tg_arn
+    container_name   = var.appointment_container_name
+    container_port   = 3001
+  }
+}
+
+# ECS Service for Patient Service
+resource "aws_ecs_service" "patient_service" {
+  name            = var.patient_service_name
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.patient_service.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_groups
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.patient_tg_arn
+    container_name   = var.patient_container_name
+    container_port   = 3000
+  }
+}
+
+# AWS cloud watch log group resource.
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name = "/ecs/ecs-application-logs"
+  retention_in_days = 7
+}
+
+output "log_group_name" { 
+value = aws_cloudwatch_log_group.ecs_logs.name
+}
+
