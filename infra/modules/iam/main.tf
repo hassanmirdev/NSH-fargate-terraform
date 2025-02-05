@@ -73,6 +73,11 @@ resource "aws_iam_policy" "ecs_cloudwatch_policy" {
         Effect   = "Allow"
         Resource = "arn:aws:logs:*:*:log-group:/ecs/*"
       },
+      {
+        Action   = "cloudwatch:PutMetricData"
+        Effect   = "Allow"
+        Resource = "*"
+      }
     ]
   })
 }
@@ -124,6 +129,29 @@ resource "aws_iam_policy" "xray_policy" {
 resource "aws_iam_role_policy_attachment" "xray_policy_attachment" {
   policy_arn = aws_iam_policy.xray_policy.arn
   role       = aws_iam_role.ecs_xray_role.name
+}
+
+resource "aws_iam_policy" "cloudwatch_agent_policy" {
+  name = "ecs-cloudwatch-agent-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = [
+          "cloudwatch:PutMetricData",
+          "cloudwatch:ListMetrics"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
+  policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
+  role       = aws_iam_role.ecs_task_execution_role.name
 }
 
 
