@@ -1,0 +1,17 @@
+{
+  "metrics": {
+    "metrics_collected": {
+      "prometheus": {
+        "enabled": true,
+        "endpoint": "http://localhost:9090/metrics",  // Update to match your Prometheus endpoint
+        "metrics_collection_interval": 60,
+        "scrape_timeout": 10
+      }
+    },
+    "aggregation_dimensions": [["InstanceId"]],
+    "append_dimensions": {
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+      "InstanceId": "${aws:InstanceId}"
+    }
+  }
+}
