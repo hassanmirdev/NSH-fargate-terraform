@@ -3,7 +3,7 @@
     "metrics_collected": {
       "prometheus": {
         "enabled": true,
-        "endpoint": "http://localhost:9090/metrics",  // Update to match your Prometheus endpoint
+        "endpoint": "http://localhost:9090/metrics", 
         "metrics_collection_interval": 60,
         "scrape_timeout": 10
       }
