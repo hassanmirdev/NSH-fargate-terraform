@@ -103,8 +103,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
 
   volume {
     name = "cloudwatch-config-volume"
-    host_path {
-      path = "/opt/aws/amazon-cloudwatch-agent/etc/"
+    config {
+      // path = "/opt/aws/amazon-cloudwatch-agent/etc/"
     }
   }
 }
@@ -204,8 +204,8 @@ resource "aws_ecs_task_definition" "patient_service" {
 
   volume {
     name = "cloudwatch-config-volume"
-    host_path {
-      path = "/opt/aws/amazon-cloudwatch-agent/etc/"
+    config {
+      // path = "/opt/aws/amazon-cloudwatch-agent/etc/"
     }
   }
 }
