@@ -42,7 +42,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
     environment = [
       {
         name  = "CW_CONFIG_CONTENT"
-        value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
+        value = filebase64("${path.module}/../../environments/dev/cloudwatch-config.json")        
+#value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
       }
     ]
     mountPoints = [
@@ -138,7 +139,8 @@ resource "aws_ecs_task_definition" "patient_service" {
     environment = [
       {
         name  = "CW_CONFIG_CONTENT"
-        value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
+        value = filebase64("${path.module}/../../environments/dev/cloudwatch-config.json")
+       # value = filebase64("cloudwatch-config.json")  # Reference the CloudWatch config file
       }
     ]
     mountPoints = [
