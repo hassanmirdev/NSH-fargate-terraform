@@ -56,6 +56,11 @@ resource "aws_ecs_task_definition" "appointment_service" {
         containerPath = "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
       }
     ]
+   command = [
+      "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl",
+      "-c", "file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json",
+      "-a", "start"
+     ]
   }, {
     # X-Ray Daemon sidecar container definition
     name      = "xray-daemon"
@@ -154,6 +159,11 @@ resource "aws_ecs_task_definition" "patient_service" {
         containerPath = "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
       }
     ]
+   command = [
+      "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl",
+      "-c", "file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json",
+      "-a", "start"
+     ]
   }, {
     # X-Ray Daemon sidecar container definition
     name      = "xray-daemon"
