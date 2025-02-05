@@ -103,8 +103,10 @@ resource "aws_ecs_task_definition" "appointment_service" {
 
   volume {
     name = "cloudwatch-config-volume"
-    config {
-      // path = "/opt/aws/amazon-cloudwatch-agent/etc/"
+    # Use 'efs' or 'host' as per the volume type (for Fargate, 'host' is not applicable)
+    efs_volume_configuration {
+      file_system_id = var.efs_file_system_id # (Optional, if using EFS)
+      root_directory = "/"
     }
   }
 }
@@ -202,12 +204,12 @@ resource "aws_ecs_task_definition" "patient_service" {
     Name = var.task_name
   }
 
-  volume {
-    name = "cloudwatch-config-volume"
-    config {
-      // path = "/opt/aws/amazon-cloudwatch-agent/etc/"
-    }
-  }
+#  volume {
+ #   name = "cloudwatch-config-volume"
+ #   config {
+  #    // path = "/opt/aws/amazon-cloudwatch-agent/etc/"
+  #  }
+  #}
 }
 
 
