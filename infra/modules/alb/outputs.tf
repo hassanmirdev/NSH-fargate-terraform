@@ -14,3 +14,12 @@ output "appointment_tg_arn" {
 output "patient_tg_arn" {
   value = aws_lb_target_group.patient_tg.arn
 }
+
+output "prometheus_tg_arn" {
+  value = aws_lb_target_group.prometheus.arn
+}
+
+
+output "grafana_tg_arn" {
+  value = aws_lb_target_group.grafana.arn
+}
