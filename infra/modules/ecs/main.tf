@@ -119,8 +119,86 @@ resource "aws_ecs_task_definition" "appointment_service" {
   }
 }
 
+ # ECS TASK DEFINITION PROMETHEUS
+resource "aws_ecs_task_definition" "prometheus" {
+  family                   = "prometheus-task"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  execution_role_arn       = var.execution_role
+  cpu                      = 256
+  memory                   = 512
 
-# ECS TASK DEFINITION APPOINTMENT SERVICE
+  container_definitions = jsonencode([
+    {
+      name      = "prometheus"
+      image     = "prom/prometheus:latest"
+      essential = true
+      cpu       = 128
+      memory    = 256
+      portMappings = [
+        {
+          containerPort = 9090
+          hostPort      = 9090
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        {
+          name  = "AWS_REGION"
+          value = "us-east-1"
+        }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
+          awslogs-region        = "us-east-1"
+          awslogs-stream-prefix = "prometheus"
+        }
+      }
+    }
+  ])
+}
+ # ECS TASK DEFINITION GRAFANA
+resource "aws_ecs_task_definition" "grafana" {
+  family                   = "grafana"
+  requires_compatibilities = ["FARGATE"]
+  network_mode            = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn      = var.execution_role
+ 
+  container_definitions = jsonencode([
+    {
+      name  = "grafana"
+      image = "grafana/grafana:latest"
+      portMappings = [
+        {
+          containerPort = 3000
+          hostPort      = 3000
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        {
+          name  = "GF_SECURITY_ADMIN_PASSWORD"
+          value = "admin"
+        }
+      ]
+      essential = true
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
+          awslogs-region        = "us-east-1"
+          awslogs-stream-prefix = "grafana"
+        }
+      }
+    }
+  ])
+}
+
+# ECS TASK DEFINITION PATIENT SERVICE
 
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.task_name
@@ -270,6 +348,44 @@ resource "aws_ecs_service" "patient_service" {
   load_balancer {
     target_group_arn = var.patient_tg_arn
     container_name   = var.patient_container_name
+    container_port   = 3000
+  }
+}
+# ECS SERVICE FOR PROMETHEUS
+resource "aws_ecs_service" "prometheus" {
+  name            = "prometheus-service"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.prometheus.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_groups
+    assign_public_ip = true
+  }
+  load_balancer {
+    target_group_arn = var.prometheus_tg_arn
+    container_name   = "prometheus"
+    container_port   = 9090
+  }
+}
+# ECS SERVICE FOR GRAFANA
+resource "aws_ecs_service" "grafana" {
+  name            = "grafana-service"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.grafana.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.security_groups
+    assign_public_ip = true
+  }
+  load_balancer {
+    target_group_arn = var.grafana_tg_arn
+    container_name   = "grafana"
     container_port   = 3000
   }
 }
