@@ -42,7 +42,6 @@ module "alb" {
   source      = "../../modules/alb"
   vpc_id      = module.vpc.vpc_id
   subnets     = module.vpc.public_subnets
-  domain_name = var.domain_name
 }
 
 # module "monitoring" {
