@@ -90,3 +90,12 @@ variable "patient_tg_arn" {
   description = "Target Group ARN for Patient Service"
   type        = string
 }
+variable "prometheus_tg_arn" {
+  description = "Target Group ARN for Prometheus Service"
+  type        = string
+}
+
+variable "grafana_tg_arn" {
+  description = "Target Group ARN for grafana Service"
+  type        = string
+}
