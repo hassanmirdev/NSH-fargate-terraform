@@ -10,13 +10,10 @@ cluster_name = "my-ecs-cluster"
 task_name = "my-task"
 appoinment_container_name = "appointment-container"
 image_url = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:appointment-service-latest"
-# image_url = "677276078111.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest"
-
-# task_memory = 1024
-# task_cpu = 325
 # log_group_name = "ecs-application-logs"
 image_url_patient = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:patient-service-latest"
 # image_url_patient = "677276078111.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest"
 patient_container_name = "patient-container"
 appointment_service_name = "appointment-service"
 patient_service_name = "patient-service"
+
