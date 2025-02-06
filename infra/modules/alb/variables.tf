@@ -13,3 +13,9 @@ variable "alb_name" {
   type        = string
   default     = "my-app-alb"
 }
+
+variable "alb_security_group_name" {
+  description = "Name of the security group for ALB"
+  type        = string
+  default     = "app-alb-sg"
+}
