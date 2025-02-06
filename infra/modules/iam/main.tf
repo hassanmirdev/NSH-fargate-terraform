@@ -21,24 +21,76 @@ resource "aws_iam_role_policy" "ecs_task_ecr_policy" {
   role = aws_iam_role.ecs_task_role.id
 
   policy = jsonencode({
-    Version = "2012-10-17",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricData"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetRepositoryPolicy",
+        "ecr:BatchGetImage",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "ecr:PutImage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::prometheus-cloud/*"
+    }
+  ]
+  })
+}
+
+resource "aws_iam_policy" "ecs_logging_xray_policy" {
+  name        = "ecs_logging_xray_policy"
+  description = "Allows ECS tasks to send logs to CloudWatch and traces to X-Ray"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability"
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:ecr:us-east-1:677276078111:repository/*"
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "xray:PutTraceSegments",
+          "xray:PutTelemetryRecords"
+        ]
+        Resource = "*"
       }
     ]
   })
 }
 
-
 # ECS Task Execution: ECS requires a task execution role to push logs to CloudWatch. 
 # You'll need to define an IAM role with permissions to push logs to CloudWatch
+
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs-task-execution-role"
   
@@ -153,5 +205,18 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
   policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
   role       = aws_iam_role.ecs_task_execution_role.name
 }
+resource "aws_iam_role_policy_attachment" "ecs_execution_attach_logging" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
 
+resource "aws_iam_role_policy_attachment" "ecs_execution_attach_xray" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_s3_read_policy" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+}
 
