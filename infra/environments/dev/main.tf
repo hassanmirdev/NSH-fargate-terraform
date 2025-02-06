@@ -34,12 +34,15 @@ module "ecs" {
   patient_container_name = var.patient_container_name
   appointment_tg_arn  = module.alb.appointment_tg_arn
   patient_tg_arn      = module.alb.patient_tg_arn
+  prometheus_tg_arn = module.alb.prometheus_tg_arn
+  grafana_tg_arn = module.alb.grafana_tg_arn
 }
 
 module "alb" {
   source      = "../../modules/alb"
   vpc_id      = module.vpc.vpc_id
   subnets     = module.vpc.public_subnets
+  domain_name = var.domain_name
 }
 
 # module "monitoring" {
