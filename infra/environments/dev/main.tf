@@ -10,11 +10,6 @@ module "iam" {
   source = "../../modules/iam"
 }
 
-module "ecr" {
-  source    = "../../modules/ecr"
-  repo_name = var.repo_name
-}
-
 module "ecs" {
   source          = "../../modules/ecs"
   cluster_name    = var.cluster_name
@@ -47,4 +42,9 @@ module "alb" {
 # module "monitoring" {
 # source         = "../../modules/cloudwatch"
 #  log_group_name = var.log_group_name
+# }
+
+# module "ecr" {
+ # source    = "../../modules/ecr"
+ # repo_name = var.repo_name
 # }
