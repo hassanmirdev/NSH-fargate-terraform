@@ -22,11 +22,11 @@ variable "availability_zones" {
   default     = ["us-west-2a", "us-west-2b"]
 }
 
-variable "repo_name" {
-  description = "Name of the ECR repository"
-  type        = string
-  default     = "my-app-repo"
-}
+# variable "repo_name" {
+ # description = "Name of the ECR repository"
+ # type        = string
+ # default     = "my-app-repo"
+# }
 
 variable "cluster_name" {
   description = "ECS Cluster Name"
