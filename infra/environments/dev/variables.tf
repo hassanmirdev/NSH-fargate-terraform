@@ -43,7 +43,7 @@ variable "task_name" {
 variable "image_url" {
   description = "Container Image URL"
   type        = string
-  default     = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:latest"
+  default     = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:appointment-service-latest"
 }
 
 variable "task_memory" {
@@ -92,5 +92,5 @@ variable "appointment_container_name" {
 variable "image_url_patient" {
   description = "Container Image URL"
   type        = string
-  default     = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:latest"
+  default     = "677276078111.dkr.ecr.us-east-1.amazonaws.com/my-app-repo:patient-service-latest"
 }
