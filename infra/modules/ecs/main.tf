@@ -118,7 +118,7 @@ resource "aws_ecs_task_definition" "appointment_service" {
     name = "cloudwatch-config-volume"
   }
 }
-
+/*
  # ECS TASK DEFINITION PROMETHEUS
 resource "aws_ecs_task_definition" "prometheus" {
   family                   = "prometheus-task"
@@ -159,8 +159,9 @@ resource "aws_ecs_task_definition" "prometheus" {
     }
   ])
 }
+*/
  # ECS TASK DEFINITION GRAFANA
-resource "aws_ecs_task_definition" "grafana" {
+/* resource "aws_ecs_task_definition" "grafana" {
   family                   = "grafana"
   requires_compatibilities = ["FARGATE"]
   network_mode            = "awsvpc"
@@ -197,7 +198,7 @@ resource "aws_ecs_task_definition" "grafana" {
     }
   ])
 }
-
+*/
 # ECS TASK DEFINITION PATIENT SERVICE
 
 resource "aws_ecs_task_definition" "patient_service" {
@@ -352,7 +353,7 @@ resource "aws_ecs_service" "patient_service" {
   }
 }
 # ECS SERVICE FOR PROMETHEUS
-resource "aws_ecs_service" "prometheus" {
+/* resource "aws_ecs_service" "prometheus" {
   name            = "prometheus-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.prometheus.arn
@@ -370,8 +371,9 @@ resource "aws_ecs_service" "prometheus" {
     container_port   = 9090
   }
 }
+*/
 # ECS SERVICE FOR GRAFANA
-resource "aws_ecs_service" "grafana" {
+/* resource "aws_ecs_service" "grafana" {
   name            = "grafana-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.grafana.arn
@@ -389,6 +391,7 @@ resource "aws_ecs_service" "grafana" {
     container_port   = 3000
   }
 }
+*/
 
 # AWS cloud watch log group resource.
 resource "aws_cloudwatch_log_group" "ecs_logs" {
